@@ -13,15 +13,13 @@ def header(url):
     return soup
 
 def main():
-    output = "picture,price,link,material,score,name,section,brand,keyword"
     queries = ['Sweaters & Cardigans', 'Shirts', 'Jeans', 'Jackets & Coats', 'Hoodies & Sweatshirts', 'Pants', 'T-shirts & Tank tops', 'Basics', 'Jackets & Suits', 'Accessories', 'Shoes', 'Underwear & Loungewear', 'Sportswear', 'Swimwear', 'Shorts', 'Casual', 'Divided', 'H&M Man', 'Modern Classics']
     output = "picture,price,link,material,score,name,section,brand,keyword"
     for key in queries:
         output += query(key)
-    f = open('nordstrom.csv','w',errors='ignore')
+    f = open('nordstrom2.csv','w',errors='ignore')
     f.write(output)
     f.close()
-
 
 def query(key):
     url = "http://shop.nordstrom.com/sr?contextualsectionid=60137519&origin=keywordsearch&keyword=" + key.replace(" ","+")
@@ -32,6 +30,7 @@ def query(key):
         output += "\n" + parse_item("https://nordstrom.com" + link.get('href'))
         output += key
     print("-----COMPLETED " + key)
+    print(output)
     return output
 
 def parse_item(url):
@@ -39,16 +38,16 @@ def parse_item(url):
     row = ""
 
     # image
-    div = soup.find('div', {'class' : 'main-content-image-wrapper'})
-    if div :
-        image = div.findChildren()[0].get('src')
-        row += image + ","
-    else:
-        row += ","
+    #div = soup.find('div', {'class' : 'main-content-image-wrapper'})
+    #if div :
+    #    image = div.findChildren()[0].get('src')
+    #    row += image + ","
+    #else:
+    #    row += ","
 
     # price
-    if soup.find('div', {'class' : 'price-current'}):
-        p = soup.find('div', {'class' : 'price-current'}).text
+    if soup.find('div', {'class' : '3p7kp'}):
+        p = soup.find('div', {'class' : 3p7kp'}).text
     else:
         p = soup.find('div', {'class' : 'price-display-item regular-price'}).text
     q = re.compile("\d+\.\d+")
@@ -59,7 +58,7 @@ def parse_item(url):
     row += url + ","
 
     # material and score
-    div2 = soup.find('div', {'class' : 'product-details-and-care'})
+    div2 = soup.find('div', {'class' : "ErtZY"})
     r = re.compile("\d+\%")
     ul = div2.findChildren()[0].find_next_sibling()
     m = ul.find('li', {'data-reactid' : r})
@@ -114,8 +113,8 @@ def computeScore(material):
         'acrylic': 2,
         'nylon': 2,
         'metallic fiber': 12,
-        'lyocell':12,        
-        }    
+        'lyocell':12,
+        }
     materials = material.split('  ')
     score = 0.0
     for m in materials:

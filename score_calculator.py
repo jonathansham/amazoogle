@@ -55,4 +55,3 @@ def calculate_score(m):
         score += item[0] * water_consumption[item[1]] + item[0] * energy_consumption[item[1]]
     score = round((score + 20) / 2)
     return score
-        
